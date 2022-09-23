@@ -138,3 +138,4 @@ MEDIA_URL = '/media/'
 if DEBUG:
     MEDIA_URL = 'media/'
 
+CSRF_TRUSTED_ORIGINS = ["https://https://beetrootshop.herokuapp.com/"]
