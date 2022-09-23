@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'ecomm',
     'cart',
     'mptt',
-    'colorfield',
     'django_google_maps',
 
 ]

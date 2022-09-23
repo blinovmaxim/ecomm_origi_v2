@@ -1,6 +1,5 @@
 from django.db import models
 from django.urls import reverse
-from colorfield.fields import ColorField
 from mptt.models import MPTTModel, TreeForeignKey
 
 
@@ -14,7 +13,7 @@ class Category(MPTTModel):
 
     class MPTTMeta:
         order_insertion_by = ['name']
-        # level_attr = 'mptt_level'
+
 
     class Meta:
         verbose_name = 'Категории'
