@@ -41,9 +41,7 @@ INSTALLED_APPS = [
     'ecomm',
     'cart',
     'mptt',
-    'django_google_maps',
-
-]
+ ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
