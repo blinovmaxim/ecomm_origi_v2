@@ -167,5 +167,5 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 LOGIN_URL = 'login/'
 
 GOOGLE_MAPS_API_KEY = env('GOOGLE_MAPS_API_KEY')
-CORS_ORIGIN_WHITELIST = ('https://beetrootshop.herokuapp.com/',)
+CORS_ORIGIN_WHITELIST = ('https://beetrootshop.herokuapp.com',)
 CSRF_TRUSTED_ORIGINS = ["https://beetrootshop.herokuapp.com/"]
