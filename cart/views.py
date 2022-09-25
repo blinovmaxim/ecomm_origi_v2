@@ -3,7 +3,8 @@ from django.views.decorators.http import require_POST
 from ecomm.models import Product
 from .cart import Cart
 from .form import CartAddProductForm
-from ecomm import views
+from ecomm.views import menu
+
 
 @require_POST
 def cart_add(request, product_id):
@@ -27,4 +28,4 @@ def cart_remove(request, product_id):
 
 def cart_detail(request):
     cart = Cart(request)
-    return render(request, 'cart/detail.html', {'cart': cart, 'menu':views.menu})
+    return render(request, 'cart/detail.html', {'cart': cart, 'menu': menu})
