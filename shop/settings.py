@@ -173,5 +173,4 @@ CSRF_TRUSTED_ORIGINS = ["https://beetrootshop.herokuapp.com"]
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'blinov.maxim@gmail.com'
-EMAIL_HOST_PASSWORD = 'zttiaszxigwakslt'
 EMAIL_USE_TLS = True
