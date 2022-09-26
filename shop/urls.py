@@ -22,8 +22,9 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     re_path(r'^cart/', include('cart.urls')),
-    path('', include('ecomm.urls', namespace='ecomm')),
+    path('', include('ecomm.urls')),
     path('account/', include('allauth.urls')),
+    path('', include('send_mail.urls')),
     path('account/', include('users.urls')),
     ]
 

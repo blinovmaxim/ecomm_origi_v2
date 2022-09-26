@@ -43,12 +43,12 @@ INSTALLED_APPS = [
     'ecomm',
     'cart',
     'mptt',
-    'django_google_maps',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'users',
     'corsheaders',
+    'send_mail'
 ]
 
 MIDDLEWARE = [
@@ -161,10 +161,17 @@ if DEBUG:
 
 LOGIN_REDIRECT_URL = '/'
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 LOGIN_URL = 'login/'
 
 GOOGLE_MAPS_API_KEY = env('GOOGLE_MAPS_API_KEY')
 CORS_ORIGIN_WHITELIST = ('https://beetrootshop.herokuapp.com',)
 CSRF_TRUSTED_ORIGINS = ["https://beetrootshop.herokuapp.com"]
+
+# Email
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'blinov.maxim@gmail.com'
+EMAIL_HOST_PASSWORD = 'zttiaszxigwakslt'
+EMAIL_USE_TLS = True
