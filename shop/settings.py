@@ -165,7 +165,7 @@ LOGIN_REDIRECT_URL = '/'
 
 LOGIN_URL = 'login/'
 
-GOOGLE_MAPS_API_KEY = env('GOOGLE_MAPS_API_KEY')
+GOOGLE_MAPS_API_KEY = os.environ.get('GOOGLE_MAPS_API_KEY')
 CORS_ORIGIN_WHITELIST = ('https://beetrootshop.herokuapp.com',)
 CSRF_TRUSTED_ORIGINS = ["https://beetrootshop.herokuapp.com"]
 
@@ -173,4 +173,5 @@ CSRF_TRUSTED_ORIGINS = ["https://beetrootshop.herokuapp.com"]
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'blinov.maxim@gmail.com'
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True

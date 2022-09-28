@@ -46,7 +46,7 @@ def product_detail(request, id, slug):
 
 def feedback(request):
     return render(request, 'ecomm/feedback.html', {'menu': menu,
-                                                   'api-key': GOOGLE_MAPS_API_KEY,
+                                                   'myapi': GOOGLE_MAPS_API_KEY,
                                                    'title': 'Обратная связь'
                                                    })
 
