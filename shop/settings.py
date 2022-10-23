@@ -153,6 +153,7 @@ USE_TZ = True
 LOCALE_PATHS = [
     BASE_DIR / 'locales',
 ]
+ALLOWED_HOSTS = ['beetrootshop.herokuapp.com', '127.0.0.1']
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
