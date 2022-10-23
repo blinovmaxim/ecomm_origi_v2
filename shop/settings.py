@@ -14,6 +14,8 @@ from pathlib import Path
 import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Environ
@@ -29,7 +31,8 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['beetrootshop.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = []
+
 
 # Application definition
 
@@ -46,9 +49,15 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
     'users',
-    'corsheaders',
-    'send_mail'
+    'debug_toolbar',
+    'send_mail',
+    'search',
+    'tags',
+    'filter',
+    'imagekit',
+    'orders',
 ]
 
 MIDDLEWARE = [
@@ -59,7 +68,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 
 ]
 
@@ -77,6 +86,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'ecomm.context_processors.get_category_tree',
+                'cart.context_processors.cart',
             ],
         },
     },
@@ -122,10 +133,11 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
-
 ACCOUNT_EMAIL_REQUIRED = True
-
-ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_SIGNUP_FORM_CLASS = 'users.forms.SignupForm'
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
@@ -145,9 +157,10 @@ LOCALE_PATHS = [
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = []
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -161,17 +174,23 @@ if DEBUG:
 
 LOGIN_REDIRECT_URL = '/'
 
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-LOGIN_URL = 'login/'
+LOGIN_URL = '/'
 
-GOOGLE_MAPS_API_KEY = os.environ.get('GOOGLE_MAPS_API_KEY')
-CORS_ORIGIN_WHITELIST = ('https://beetrootshop.herokuapp.com',)
-CSRF_TRUSTED_ORIGINS = ["https://beetrootshop.herokuapp.com"]
+GOOGLE_MAPS_API_KEY = env('GOOGLE_MAPS_API_KEY')
 
-# Email
+INTERNAL_IPS = [
+    "127.0.0.1",
+    ]
+
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'blinov.maxim@gmail.com'
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
+
+
+# Liqpay keys
+LIQPAY_PUBLIC_KEY = env('LIQPAY_PUBLIC_KEY')
+LIQPAY_PRIVATE_KEY = env('LIQPAY_PRIVATE_KEY')

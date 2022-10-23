@@ -1,84 +1,39 @@
 {% extends 'ecomm/base.html' %}
+{% load i18n %}
+
 {% block title %}
-{% load mptt_tags %}
-{% if category %}{{ category.name }}{% else %}Товары{% endif %}
-{% endblock %}
+    <title>Главная страница Интернет-Магазина</title>
+{% endblock title %}
+
+
 {% block content %}
-<h1>Список категорий</h1>
-            <a href="{% url 'ecomm:home' %}">Все</a>
-<ul>
-    {% recursetree categories %}
-        <li>
+<div class="container-lg">
+<h1>Список товаров</h1>
+<div class="card-group">
+    {% for product in products %}
+    <div class="row py-2">
+        <div class="col-4">
+            <div class="card" style="height: 18rem; width: 12rem">
+                <img class="card-img-top w-50 py-3 mx-auto"
+                     src="{% if product.image %}
+                            {{ product.image_in_main.url }}
+                           {% endif %}"
+                     alt="{% trans "This product have no image" %}">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a href="{{ product.get_absolute_url }}"
+                           class="link-dark stretched-link">
+                            {{ product.get_short_name }}
+                        </a>
+                    </h5>
+                    <p class="card-text"><b>Цена</b>: {{ product.price }}₴</p>
+                </div>
 
-            <a href="{{ node.get_absolute_url}}">{{ node.name }}</a>
-
-            {% if not node.is_leaf_node and node.level >= 0 %}
-                <ul class="children">
-                    <a href="{{ children.get_absolute_url }}">{{ children }}</a>
-                </ul>
-            {% endif %}
-        </li>
-    {% endrecursetree %}
-</ul>
-<h1>{% if category %}{{ category.name }}{% else %}Товар{% endif %}</h1>
-{% for product in products %}
-<div>
-<a href="{{ product.get_absolute_url }}">
-    <img src="{% if product.image %}{{ product.image.url }}{% endif %}">
-</a>
-<a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
-<br>
-    <p>Цена: {{ product.price }}</p>
-<br>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
 </div>
-{% endfor %}
+</div>
 {% endblock %}
 
-
-
-
-
-<!--{% load static %}-->
-<!--<!DOCTYPE html>-->
-<!--<html lang="en" >-->
-<!--<head>-->
-<!--    <title>Главная стринца супер сайта</title>-->
-<!--    <link type="text/css" href={% static 'ecomm/css/style.css' %} rel="stylesheet" />-->
-<!--    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">-->
-<!--	<link rel="shortcut icon" href="{% static 'ecomm/images/main.ico' %}" type="image/x-icon"/>-->
-<!--	<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
-<!--</head>-->
-<!--<body>-->
-<!--    <div class="page">-->
-<!--        <header class="header"></header>-->
-
-<!--        <main class="content">-->
-
-<!--            <h1>Список категорий</h1>-->
-<!--            <ul>-->
-<!--                {% for c in category %}-->
-<!--                <li><a href="{{ c.slug }}/">{{ c.name }}</a></li>-->
-<!--                {% endfor %}-->
-<!--            </ul>-->
-
-<!--            <h1>Список товаров</h1>-->
-<!--            <ul>-->
-<!--            {% for product in products %}-->
-<!--                <li><a href="/product/{{ product.slug }}/">{{ product.name }}</a></li>-->
-<!--            {% endfor %}-->
-<!--            </ul>-->
-<!--        </main>-->
-
-
-<!--&lt;!&ndash; Footer &ndash;&gt;-->
-<!--       <footer class="footer"></footer>-->
-<!--<tr><td>-->
-<!--	<div id="footer">-->
-<!--		<p>&copy; 2022 Частичное или полное копирование информации с данного сайта для распространения на других ресурсах, в том числе и бумажных, строго запрещено.</p>-->
-<!--	</div>-->
-<!--</td></tr></table>-->
-<!--&lt;!&ndash; Конец footer'а и страницы &ndash;&gt;-->
-<!--    </div>-->
-
-<!--</body>-->
-<!--</html>-->

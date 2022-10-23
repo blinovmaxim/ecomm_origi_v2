@@ -1,34 +1,72 @@
 {% extends 'ecomm/base.html' %}
+{% load static %}
 {% block title %}
-{{ product.name }}
+    <title>{{ product.name }}</title>
 {% endblock %}
+
 {% block content %}
+    {% load breadcrumbs %}
+    {% get_breadcrumbs_product product %}
 
-<div class="product-detail">
-<img class="img-article-left thumb" src="{% if product.image %}{{product.image.url}}{% endif %}">
+<div class="container-lg">
+    <div class="row">
+        <div class="col">
+            <a href="{{ product.image.url }}" data-fslightbox="images">
+            <img
+              class="img-fluid"
+              src="{{product.image_in_product.url}}"
+            />
+            </a>
+            {% if product.images.all %}
+            <div class="images">
+                {% for prod_image in product.images.all %}
+                    <a href="{{ prod_image.product_image.url }}" data-fslightbox="images">
+                    <img
+                        class="img-fluid"
+                        src="{{ prod_image.product_image_thumbnail.url }}"
+                        alt="{{ prod_image.title }}"
+                    />
+                    </a>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
 
-<h2>
-<a href="{{ product.category.get_absolute_url }}">{{product.category }}</a>
-</h2>
+        <div class="col">
+            <div class="info">
+                <div class="mb-4">
+                  <h1 class="title">{{ product.name }}</h1>
+                </div>
+                <div class="mt-2">
+                  <h5 class="text">Цена: {{ product.price }}</h5>
+                  <p class="text">
+                    <form action="{% url 'cart:cart_add' product.id %}" method="post">
+                      {{ cart_product_form }}
+                      {% csrf_token %}
+                      <input class="btn btn-success" type="submit" value="Add to cart">
+                    </form>
+                  </p>
+                </div>
+                <div class="text mt-4">
+                  <h2 class="text">Описание</h2>
+                  <p>{{ product.description }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<div class="product-info">
-    <h1>{{ product.name }}</h1>
-    <h3>{{ product.price }}</h3>
-    <form action="{% url 'cart:cart_add' product.id %}" method="post">
-    {{ cart_product_form }}
-    {% csrf_token %}
-    <input type="submit" value="Add to cart">
-    </form>
-    <p>{{ product.description }}</p>
+    <div class="row">
+        <div class="col">
+        <hr/>
+        <h3 class="text">Характеристики товара:</h3>
+            {% for spec in product.productspecificationvalue_set.all %}
+                <p>{{ spec.specification }} - {{ spec.value }}</p>
+            {% endfor %}
+        </div>
+    </div>
 </div>
 
-
-<div class="product_charc">
-<h4>Характеристики товара:</h4>
-    {% for spec in product.productspecificationvalue_set.all %}
-<p>{{ spec.specification }} - {{ spec.value }}</p>
-    {% endfor %}
-</div></div>
+<script src="{% static 'ecomm/js/fslightbox.js' %}"></script>
 {% endblock %}
 
 

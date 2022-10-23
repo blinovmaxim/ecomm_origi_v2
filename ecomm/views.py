@@ -3,31 +3,56 @@ from django.shortcuts import render, get_object_or_404
 from .models import *
 from cart.form import CartAddProductForm
 from shop.settings import GOOGLE_MAPS_API_KEY
-
-menu = [{'title': "О сайте", 'url_name': 'about'},
-        {'title': "Обратная связь", 'url_name': 'feedback'},
-        {'title': "Что-то ещё", 'url_name': 'something'},
-        {'title': "Корзина", 'url_name': 'cart'},
-        ]
+from django.views.generic import DetailView, ListView
 
 
-def homepage(request, cat_slug=None):
-    category = None
-    categories = Category.objects.all()
-    # categories = Category.objects.filter(level=0)
-    # categories = Category.get_children()
-
+def homepage(request):
     products = Product.objects.filter(available=True)
-    if cat_slug:
-        category = get_object_or_404(categories, slug=cat_slug)
-        products = products.filter(category=category)
-    context = {'menu': menu,
-               'products': products,
-               'category': category,
-               'categories': categories,
-               'title': 'Главная страница',
-               }
+    context = {'products': products,
+               'title': 'Главная страница'}
+
     return render(request, 'ecomm/main.html', context=context)
+
+
+# class ParentCategoryDetailView(DetailView):
+#     model = Category
+#     template_name = 'ecomm/parent.html'
+#     context_object_name = 'parent_category'
+#
+#
+# class ChildrenCategoryDetailView(DetailView):
+#     model = Category
+#     template_name = 'ecomm/children.html'
+#     context_object_name = 'children_category'
+#     paginate_by = 5
+#     slug_field = 'slug'
+#
+#     def get_context_data(self, *, object_list=None, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['products'] = self.object.product_set.all()
+#         return context
+
+
+def category_page(request, slug):
+    category = Category.objects.get(slug=slug)
+
+    if category.level == 0:
+        child_cat = category.children.all()
+        context = {'category': category, 'child_cat': child_cat}
+        return render(request, 'ecomm/category_parent.html', context=context)
+
+    else:
+        products = category.product_set.all()
+        context = {
+            'products': products,
+            'category': category}
+
+        sort = request.GET.get('sort')
+        if sort:
+            products = category.product_set.all()[:int(sort)]
+            context['products'] = products
+
+        return render(request, 'ecomm/category_children.html', context=context)
 
 
 def product_detail(request, id, slug):
@@ -35,8 +60,7 @@ def product_detail(request, id, slug):
     product_spec = ProductSpecification.objects.all()
     product_spec_val = ProductSpecificationValue.objects.all()
     cart_product_form = CartAddProductForm()
-    context = {'menu': menu,
-               'product_spec': product_spec,
+    context = {'product_spec': product_spec,
                'product_spec_val': product_spec_val,
                'product': product,
                'cart_product_form': cart_product_form}
@@ -45,17 +69,17 @@ def product_detail(request, id, slug):
 
 
 def feedback(request):
-    return render(request, 'ecomm/feedback.html', {'menu': menu,
-                                                   'myapi': GOOGLE_MAPS_API_KEY,
-                                                   'title': 'Обратная связь'
-                                                   })
+    return render(request, 'ecomm/feedback.html', {'title': 'Обратная связь',
+                                                   'myapi': GOOGLE_MAPS_API_KEY})
 
 
-def something(request):
-    return render(request, 'ecomm/something.html', {'menu': menu, 'title': 'Что то полезное'})
+def policy(request):
+    return render(request, 'ecomm/policy.html', {'title': 'Политика Конфеденциальности'})
 
 
 def about(request):
-    return render(request, 'ecomm/about.html', {'menu': menu, 'title': 'О сайте'})
+    return render(request, 'ecomm/about.html', {'title': 'О сайте'})
 
 
+def shipping_and_payment(request):
+    return render(request, 'ecomm/shipping_and_payment.html', {'title': 'Доставка и оплата'})

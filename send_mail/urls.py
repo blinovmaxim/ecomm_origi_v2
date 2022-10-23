@@ -1,10 +1,9 @@
 from django.urls import path
 
-import send_mail
-from send_mail.views import mail_send
+from . import views
 
-app_name = 'send_mail'
+app_name = 'send_email'
 
 urlpatterns = [
-    path('send_mail', send_mail.views.mail_send, name='send_mail'),
+    path('send_mail', views.mail_send, name='send_email')
 ]

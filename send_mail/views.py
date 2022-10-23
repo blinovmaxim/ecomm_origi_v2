@@ -4,7 +4,6 @@ from django.http import HttpResponseRedirect
 from django.template import loader
 
 
-# Create your views here.
 def mail_send(request):
     name = request.POST.get('name')
     email = request.POST.get('email')

@@ -1,6 +1,47 @@
 from django.db import models
+from django.db.models import Q
 from django.urls import reverse
 from mptt.models import MPTTModel, TreeForeignKey
+from imagekit.models import ImageSpecField
+from imagekit.processors import ResizeToFill
+
+
+class ProductQuerySet(models.query.QuerySet):
+
+    def active(self):
+        return self.filter(available=True)
+
+    def featured(self):
+        return self.filter(featured=True, available=True)
+
+    def search(self, query):
+        lookups = (Q(name__icontains=query) |
+                   Q(description__icontains=query) |
+                   Q(slug__icontains=query) |
+                   Q(price__icontains=query) |
+                   Q(tag__name__icontains=query))
+        return self.filter(lookups).distinct()
+
+
+class ProductManager(models.Manager):
+
+    def get_query_set(self):
+        return ProductQuerySet(self.model, using=self._db)
+
+    def active_all(self):
+        return self.get_query_set().active()
+
+    def featured(self):
+        return self.get_query_set().featured()
+
+    def get_by_id(self, pk):
+        qs = self.get_queryset().filter(pk=pk)
+        if qs.count() == 1:
+            return qs.first()
+        return None
+
+    def search(self, query):
+        return self.get_query_set().search(query)
 
 
 class Category(MPTTModel):
@@ -10,6 +51,7 @@ class Category(MPTTModel):
     available = models.BooleanField(default=True, verbose_name='Опубликован')
     parent = TreeForeignKey("self", on_delete=models.CASCADE, related_name='children', null=True, blank=True,
                             verbose_name='Родительская Категория')
+    image = models.ImageField(upload_to="category/%Y", null=True, blank=True, verbose_name="Фото")
 
     class MPTTMeta:
         order_insertion_by = ['name']
@@ -23,7 +65,7 @@ class Category(MPTTModel):
         return f'{self.name} | - {self.parent}' if self.parent else self.name
 
     def get_absolute_url(self):
-        return reverse('ecomm:product_list_by_category', args=[self.slug])
+        return reverse('ecomm:category', args=[self.slug])
 
 
 class ProductType(models.Model):
@@ -60,8 +102,10 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Цена')
     quantity = models.IntegerField(verbose_name='Количество', default=20)
     available = models.BooleanField(default=True, verbose_name='Опубликован')
+    featured = models.BooleanField(default=False, verbose_name='Избранное')
     created = models.DateTimeField(auto_now_add=True, verbose_name='Время создания')
     uploaded = models.DateTimeField(auto_now=True, verbose_name='Время обновления')
+    objects = ProductManager()
 
     class Meta:
         ordering = ('id',)
@@ -85,6 +129,31 @@ class Product(models.Model):
     image_img.short_description = 'Картинка'
     image_img.allow_tags = True
 
+    image_in_product = ImageSpecField(source='image',
+                                      processors=[ResizeToFill(636, 636)],
+                                      format='JPEG',
+                                      options={'quality': 60})
+
+    image_in_category = ImageSpecField(source='image',
+                                       processors=[ResizeToFill(304, 456)],
+                                       format='JPEG',
+                                       options={'quality': 60})
+
+    image_in_main = ImageSpecField(source='image',
+                                   processors=[ResizeToFill(95, 150)],
+                                   format='JPEG',
+                                   options={'quality': 60})
+
+    def get_short_description(self):
+        if len(self.description) < 40:
+            return self.description
+        return self.description[:40]
+
+    def get_short_name(self):
+        if len(self.name) < 40:
+            return self.name
+        return self.name[:40]
+
 
 class ProductSpecificationValue(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -97,3 +166,21 @@ class ProductSpecificationValue(models.Model):
 
     def __str__(self):
         return self.value
+
+
+class ProductImages(models.Model):
+    product_image = models.ImageField(upload_to="product/%Y", blank=True, null=True, verbose_name="Фото")
+    title = models.CharField(max_length=100, blank=True, null=True, verbose_name='title')
+    product = models.ForeignKey(Product, on_delete=models.DO_NOTHING, related_name="images")
+
+    product_image_thumbnail = ImageSpecField(source='product_image',
+                                             processors=[ResizeToFill(150, 150)],
+                                             format='JPEG',
+                                             options={'quality': 60})
+
+    class Meta:
+        verbose_name = "Product Image"
+        verbose_name_plural = "Product Images"
+
+    def __str__(self):
+        return self.title
