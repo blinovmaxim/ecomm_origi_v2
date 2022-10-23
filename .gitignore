@@ -176,5 +176,4 @@ cython_debug/
 #.idea/
 
 # End of https://www.toptal.com/developers/gitignore/api/django
-db.sqlite3
 media/users_avatar/2c699dff98ff95a510e27297da2c59ea.jpg
