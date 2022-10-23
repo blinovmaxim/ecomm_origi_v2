@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'filter',
     'imagekit',
     'orders',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -69,6 +70,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 
 ]
 
@@ -153,7 +155,11 @@ USE_TZ = True
 LOCALE_PATHS = [
     BASE_DIR / 'locales',
 ]
+# need for heroku
+
 ALLOWED_HOSTS = ['beetrootshop.herokuapp.com', '127.0.0.1']
+CORS_ORIGIN_WHITELIST = ('https://beetrootshop.herokuapp.com',)
+CSRF_TRUSTED_ORIGINS = ["https://beetrootshop.herokuapp.com"]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
