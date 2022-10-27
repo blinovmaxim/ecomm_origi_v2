@@ -35,13 +35,13 @@
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">{{ form.login.label_tag }}</label>
                 <div class="col-auto">
-                    <input class="col-form-label" id={{ form.login }}
+                    {{ form.login }}
                 </div>
             </div>
             <div class="mb-3">
                 <label for="exampleInputPassword1" class="form-label">{{ form.password.label_tag }}</label>
                 <div class="col-auto">
-                    <input type="password" class="col-form-label" id={{ form.password }}
+                    {{ form.password }}
                 </div>
             </div>
             <button type="submit" class="btn btn-primary"><strong>{% trans 'Login' %}

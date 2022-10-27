@@ -33,7 +33,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -140,7 +139,8 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_SIGNUP_FORM_CLASS = 'users.forms.SignupForm'
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_EMAIL_VERIFICATION = 'None'
+'mandatory'
 SOCIALACCOUNT_AUTO_SIGNUP = False
 
 SITE_ID = 2
@@ -183,7 +183,6 @@ STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = []
 
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
@@ -204,7 +203,7 @@ GOOGLE_MAPS_API_KEY = env('GOOGLE_MAPS_API_KEY')
 
 INTERNAL_IPS = [
     "127.0.0.1",
-    ]
+]
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
@@ -212,7 +211,8 @@ EMAIL_HOST_USER = 'blinov.maxim@gmail.com'
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
 
-
 # Liqpay keys
 LIQPAY_PUBLIC_KEY = env('LIQPAY_PUBLIC_KEY')
 LIQPAY_PRIVATE_KEY = env('LIQPAY_PRIVATE_KEY')
+
+MESSAGE_TAGS = {50: 'success_send'}

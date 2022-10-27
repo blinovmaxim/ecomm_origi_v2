@@ -2,6 +2,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
+
+from orders.models import Order
 from users.forms import ProfileForm
 from users.models import UserProfile
 
@@ -9,6 +11,7 @@ from users.models import UserProfile
 @login_required
 def profile(request):
     user = request.user
+
     return render(request, 'profile.html', {'user': user,'title': 'My Profile'})
 
 
