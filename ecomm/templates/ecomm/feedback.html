@@ -29,13 +29,12 @@
                      <div class="col-lg-6">
                         <span>Email</span>
                          <div class="input-group mb-3">
-                             <input type="text" class="form-control" placeholder="Username" aria-label="Username">
-                             <span class="input-group-text">@</span>
-                             <input type="text" class="form-control" placeholder="Server" aria-label="Server">
+                             <input type="email" class="form-control" name="email" maxlength="40" placeholder="Your email" required>
                          </div>
                      </div>
                     <div class="col-12">
-                        <textarea placeholder="Type your message here.." class="form-control mt-3" required></textarea>
+                        <textarea class="form-control mt-3" rows="7" name="message" placeholder="Type your message here.."  required></textarea>
+{#
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary">Send email</button>
