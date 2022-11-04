@@ -24,6 +24,11 @@ class ProductTypeAdmin(admin.ModelAdmin):
 
 class ProductSpecificationValueInline(admin.TabularInline):
     model = ProductSpecificationValue
+    
+
+class ProductImages(admin.TabularInline):
+    model = ProductImages
+
 
 
 @admin.register(Product)
