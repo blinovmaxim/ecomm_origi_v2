@@ -1,5 +1,7 @@
 
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
+
+from comments.form import CommentForm
 from .models import Category, Product, ProductSpecificationValue, ProductSpecification
 from cart.form import CartAddProductForm
 from shop.settings import GOOGLE_MAPS_API_KEY
@@ -43,18 +45,26 @@ def category_page(request, slug):
 
 
 def product_detail(request, id, slug):
-    product = get_object_or_404(Product, id=id, slug=slug, available=True)
-    product_spec = ProductSpecification.objects.all()
-    product_spec_val = ProductSpecificationValue.objects.all()
+    product = get_object_or_404(Product, pk=id, slug=slug, available=True)
+    category = product.category
     cart_product_form = CartAddProductForm()
-    context = {
-        "product_spec": product_spec,
-        "product_spec_val": product_spec_val,
-        "product": product,
-        "cart_product_form": cart_product_form,
-    }
 
-    return render(request, "ecomm/product.html", context=context)
+    if request.method == "POST":
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            data = comment_form.save(commit=False)
+            data.product_id = product.pk
+            data.save()
+            return redirect('ecomm:product_detail', id=id, slug=slug)
+    else:
+        comment_form = CommentForm()
+
+    context = {'product': product,
+               'cart_product_form': cart_product_form,
+               'comment_form': comment_form,
+               'similar_product': category.product_set.all()[:5]}
+
+    return render(request, 'ecomm/product.html', context=context)
 
 
 def feedback(request):
