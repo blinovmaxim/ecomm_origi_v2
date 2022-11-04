@@ -8,12 +8,15 @@
 {% block content %}
 <div class="container-lg">
 {% if user.is_authenticated %}
-        <a href="{% url 'account_email' %}"class="btn btn-primary"  role="button" >Manage Email</a>
-        | <a href="{% url 'account_change_password' %}"class="btn btn-primary"  role="button" >Change Password</a>
+        <a href="{% url 'account_email' %}"class="btn btn-primary"  role="button" >
+            {% trans "Manage Email" %}</a>
+        | <a href="{% url 'account_change_password' %}"class="btn btn-primary"
+             role="button" >{% trans "Change Password" %}</a>
         |
-    <a href="{% url 'account_logout' %}"class="btn btn-primary"  role="button" >Logout</a>
+    <a href="{% url 'account_logout' %}" class="btn btn-primary"  role="button"
+    >{% trans "Logout" %}</a>
     {% endif %}
-<h2>Update My Profile</h2>
+<h2>{% trans "Update My Profile" %}</h2>
     <div class="row">
         <form method="post" action="" enctype="multipart/form-data">
           {% csrf_token %}
@@ -31,6 +34,7 @@
                    </div>
 
                 {% endfor %}
+                {% include 'phones.html' %}
               <div class="button-wrapper submit">
                  <input type="submit" class="btn btn-primary" value="Update" />
               </div>

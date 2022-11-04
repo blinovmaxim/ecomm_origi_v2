@@ -1,8 +1,7 @@
 {% extends 'ecomm/base.html' %}
 {% load i18n %}
-
   <head>
-      {% block title %}
+    {% block title %}
           <title>{% block head_title %}{% endblock %}</title>
        {% endblock title %}
        {% block extra_head %}
@@ -10,8 +9,20 @@
   </head>
   <body>
     {% block body %}
+
+    {% if messages %}
     <div>
-      <strong>Menu:</strong>
+      <strong>{% trans "Messages" %}:</strong>
+      <ul>
+        {% for message in messages %}
+        <li>{{message}}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+
+    <div>
+      <strong>{% trans "Menu" %}:</strong>
       <ul>
         {% if user.is_authenticated %}
         <li><a href="{% url 'account_email' %}">{% trans 'Change E-mail' %}</a></li>

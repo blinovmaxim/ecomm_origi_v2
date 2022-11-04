@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from ecomm.models import *
-from django.db import *
 
 
 def filter_page(request):

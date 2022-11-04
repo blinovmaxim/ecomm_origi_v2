@@ -38,7 +38,7 @@
                   <h1 class="title">{{ product.name }}</h1>
                 </div>
                 <div class="mt-2">
-                  <h5 class="text">Цена: {{ product.price }}</h5>
+                  <h5 class="text">{% trans "Price" %}: {{ product.price }}</h5>
                   <p class="text">
                     <form action="{% url 'cart:cart_add' product.id %}" method="post">
                       {{ cart_product_form }}
@@ -48,7 +48,7 @@
                   </p>
                 </div>
                 <div class="text mt-4">
-                  <h2 class="text">Описание</h2>
+                  <h2 class="text">{% trans "Description" %}</h2>
                   <p>{{ product.description }}</p>
                 </div>
             </div>
@@ -58,7 +58,7 @@
     <div class="row">
         <div class="col">
         <hr/>
-        <h3 class="text">Характеристики товара:</h3>
+        <h3 class="text">{% trans "Product characteristics" %}:</h3>
             {% for spec in product.productspecificationvalue_set.all %}
                 <p>{{ spec.specification }} - {{ spec.value }}</p>
             {% endfor %}

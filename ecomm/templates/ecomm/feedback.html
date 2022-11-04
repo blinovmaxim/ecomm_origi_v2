@@ -1,4 +1,5 @@
 {% extends 'ecomm/base.html' %}
+{% load i18n %}
 
 {% block title %}<title>{{ title }}</title>{% endblock title %}
 
@@ -7,14 +8,14 @@
     {% get_breadcrumbs_other title %}
 
 <div class="container-lg pt-2">
-    <h1>Как нас Найти</h1>
+    <h1>{% trans "Find us" %}</h1>
 
     <iframe width="1000" height="450"
             style="border:0" loading="lazy"
             allowfullscreen src="https://www.google.com/maps/embed/v1/place?q=place_id:ChIJxZ5aCIExxkARZAneoD2Z30g&key={{ myapi }}">
     </iframe>
 
-    <h2>Написать нам</h2>
+    <h2>{% trans "Mail us" %}</h2>
     <div>
         <div class="col-lg-8">
             <form action="/send_mail" method="POST" enctype="multipart/form-data" autocomplete="off">
@@ -34,10 +35,10 @@
                      </div>
                     <div class="col-12">
                         <textarea class="form-control mt-3" rows="7" name="message" placeholder="Type your message here.."  required></textarea>
-{#
+
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary">Send email</button>
+                <button type="submit" class="btn btn-primary">{% trans "Send email" %}</button>
             </form>
             <!--Message from Backend-->
             {% if messages %}
@@ -56,7 +57,7 @@
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h5 class="modal-title" id="Mymessage"><i class="fas fa-biohazard"></i>&nbsp;&nbsp;  Perfect!!</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label={% trans "Close" %}></button>
                                                           </div>
                                                               <div class="modal-body text-center">
                                                                       <div class="text-center text-success mt-3">
@@ -66,7 +67,7 @@
                                                                   <div class="mb-3">{{ message }}</div>
                                                               </div>
                                                           <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Close" %}</button>
                                                     </div>
                                                 </div>
                                          </div>
@@ -76,6 +77,8 @@
         </div>
     </div>
 </div>
+
 {% endblock %}
+
 
 

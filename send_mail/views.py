@@ -19,10 +19,12 @@ def mail_send(request):
     message = template.render(context)
 
     email = EmailMultiAlternatives(
-        "Обращение от клиента", message,
-        "Hello" + "- Manager !",
+        "Client's message", message,
+        "Hello" + "- Lucky Man !",
         ["blinov.maxim@gmail.com"]
+
     )
+
     email.content_subtype = 'html'
     email.send()
     success_send = 50
